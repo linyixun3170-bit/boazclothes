@@ -28,7 +28,7 @@ export default function JournalPage() {
     async function load() {
       try {
         const res = await fetch(
-          "/api/posts"
+          "https://boazclothes.com/wp-json/wp/v2/posts?per_page=10&_embed"
         );
         if (res.ok) {
           const data = await res.json();
