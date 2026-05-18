@@ -1,109 +1,77 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface CTASectionProps {
-  title?: string;
-  subtitle?: string;
-  primaryLabel?: string;
-  primaryHref?: string;
-  secondaryLabel?: string;
-  secondaryHref?: string;
-  variant?: "light" | "dark";
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function CTASection({
-  title = "Ready to Scale Your Brand?",
-  subtitle = "Get your free sample pack and experience BOAZ quality before committing. Zero risk, no pressure.",
-  primaryLabel = "Get Free Samples",
-  primaryHref = "/contact",
-  secondaryLabel = "WhatsApp Us",
-  secondaryHref = "https://wa.me/your-number",
-  variant = "dark",
-}: CTASectionProps) {
-  const isDark = variant === "dark";
+export default function CTASection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        sectionRef.current?.querySelectorAll(".cta-animate") || [],
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.12,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+          },
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
-      className={`py-20 md:py-28 ${
-        isDark ? "bg-dark text-cream" : "bg-cream text-dark"
-      }`}
+      ref={sectionRef}
+      className="relative py-40 md:py-52 bg-dark overflow-hidden"
     >
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        {/* Zero-Risk Badge */}
-        <div
-          className={`inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.2em] ${
-            isDark
-              ? "border border-gold/30 text-gold"
-              : "border border-dark/20 text-dark"
-          }`}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-          Zero Risk — Free Samples Available
-        </div>
+      {/* Background texture */}
+      <div
+        className="absolute inset-0 opacity-20 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1920&q=80')",
+        }}
+      />
+      <div className="absolute inset-0 bg-dark/70" />
 
-        <h2 className="font-heading text-3xl md:text-5xl leading-tight">
-          {title}
+      <div className="relative z-10 max-w-3xl mx-auto text-center section-padding">
+        <span className="cta-animate text-caption text-cream/50 mb-6 block">
+          Start Your Order
+        </span>
+        <h2 className="cta-animate text-display-lg text-cream mb-6">
+          Get Your <span className="italic">Free</span> Quote
         </h2>
-        <p
-          className={`mt-6 max-w-xl mx-auto leading-relaxed ${
-            isDark ? "text-cream/60" : "text-warm-gray"
-          }`}
-        >
-          {subtitle}
+        <p className="cta-animate text-body-xl text-cream/60 mb-12 max-w-lg mx-auto">
+          Tell us what you need. We'll reply within 24 hours with pricing,
+          lead times, and sample options.
         </p>
-
-        {/* Psychological triggers */}
-        <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs">
-          {[
-            "No minimum trial order",
-            "Free fabric swatches",
-            "48hr quote turnaround",
-            "Dedicated account manager",
-          ].map((item) => (
-            <span
-              key={item}
-              className={`flex items-center gap-1.5 ${
-                isDark ? "text-cream/50" : "text-warm-gray"
-              }`}
-            >
-              <svg
-                className="w-3 h-3 text-green-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              {item}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href={primaryHref}
-            className="px-8 py-3.5 bg-gold text-dark text-sm uppercase tracking-widest rounded-full hover:bg-cream hover:text-dark transition-all duration-300"
-          >
-            {primaryLabel}
+        <div className="cta-animate flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/contact/" className="btn-capsule btn-capsule-light">
+            Request a Quote
           </Link>
-          <Link
-            href={secondaryHref}
+          <a
+            href="https://wa.me/8618868798631"
             target="_blank"
             rel="noopener noreferrer"
-            className={`px-8 py-3.5 text-sm uppercase tracking-widest rounded-full transition-all duration-300 ${
-              isDark
-                ? "border border-cream/20 text-cream hover:border-gold hover:text-gold"
-                : "border border-dark/20 text-dark hover:border-gold hover:text-gold"
-            }`}
+            className="text-[12px] uppercase tracking-[0.2em] text-cream/60 hover:text-cream transition-colors link-underline"
           >
-            {secondaryLabel}
-          </Link>
+            WhatsApp Us
+          </a>
         </div>
       </div>
     </section>

@@ -1,169 +1,261 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  /* Brand Colors */
-  --color-cream: #f5f0e8;
-  --color-dark: #1a1a1a;
-  --color-warm-gray: #8a8a8a;
-  --color-light-gray: #e8e4dc;
-  --color-gold: #c4b898;
-  --color-gold-light: #d4c8a8;
+/* ── Google Fonts ─────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
 
-  /* Semantic */
-  --color-bg-primary: #f5f0e8;
-  --color-bg-secondary: #e8e4dc;
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #8a8a8a;
-  --color-text-muted: #a8a8a8;
-  --color-accent: #c4b898;
-  --color-accent-hover: #b8ac88;
-  --color-border: #e8e4dc;
-
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Prata", ui-serif, Georgia, serif;
-
-  /* Nomad-grade animation timing */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+:root {
+  /* ── Nomad-style neutral palette ───────── */
+  --color-cream: #FAF9F6;
+  --color-light-gray: #F5F5F0;
+  --color-dark: #1A1A1A;
+  --color-warm-gray: #666666;
+  --color-gold: #C9A96E;
+  --color-stone: #E8E6E1;
+  --color-ink: #0A0A0A;
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
 }
 
-/* ─── Custom Cursor ─────────────────────────── */
-* {
-  cursor: none;
+/* ── Smooth scrolling via Lenis ─────────── */
+html.lenis, html.lenis body {
+  height: auto;
 }
 
-@media (pointer: coarse) {
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ── Hide default cursor on desktop ─────── */
+@media (hover: hover) and (pointer: fine) {
   * {
-    cursor: auto !important;
+    cursor: none !important;
   }
 }
 
-.custom-cursor {
-  width: 24px;
-  height: 24px;
-  border: 1.5px solid var(--color-gold);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: width 0.3s var(--ease-out-expo),
-    height 0.3s var(--ease-out-expo),
-    background-color 0.3s var(--ease-out-expo),
-    border-color 0.3s var(--ease-out-expo);
-  transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
-}
-
-.custom-cursor.hovering {
-  width: 48px;
-  height: 48px;
-  background-color: rgba(196, 184, 152, 0.12);
-  border-color: var(--color-gold-light);
-}
-
-.custom-cursor-dot {
-  width: 4px;
-  height: 4px;
-  background-color: var(--color-gold);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 10000;
-  transition: transform 0.05s ease;
-  transform: translate(-50%, -50%);
-}
-
-/* ─── Selection ─────────────────────────── */
-::selection {
-  background-color: rgba(196, 184, 152, 0.3);
+/* ── Base typography ────────────────────── */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
   color: var(--color-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-/* ─── Link Underline Effect ─────────────────────────── */
+/* ── Selection ────────────────────────────── */
+::selection {
+  background-color: var(--color-dark);
+  color: var(--color-cream);
+}
+
+/* ── Heading scale (Nomad style) ──────────── */
+.text-display-xl {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+}
+
+.text-display-lg {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.text-display-md {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.text-display-sm {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* ── Body text scale ──────────────────────── */
+.text-body-xl {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--color-warm-gray);
+}
+
+.text-body-lg {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-warm-gray);
+}
+
+.text-body-md {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.text-caption {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-warm-gray);
+}
+
+/* ── Link underline animation (Nomad) ───── */
 .link-underline {
   position: relative;
-  text-decoration: none;
+  display: inline-block;
 }
 
 .link-underline::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
   width: 0;
   height: 1px;
   background-color: currentColor;
-  transition: width 0.4s var(--ease-out-expo);
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .link-underline:hover::after {
   width: 100%;
 }
 
-/* ─── Typography ─────────────────────────── */
-/* Enhanced heading letter-spacing for premium feel */
-.font-heading {
-  letter-spacing: -0.01em;
+/* ── Capsule button ───────────────────────── */
+.btn-capsule {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 36px;
+  border: 1px solid var(--color-dark);
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  background: transparent;
+  overflow: hidden;
+  transition: color 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ─── Animations ─────────────────────────── */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.btn-capsule::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-dark);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+  border-radius: 9999px;
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s var(--ease-out-expo) forwards;
+.btn-capsule:hover {
+  color: var(--color-cream);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.btn-capsule:hover::before {
+  transform: scaleX(1);
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.8s ease forwards;
+.btn-capsule-light {
+  border-color: var(--color-cream);
+  color: var(--color-cream);
 }
 
-/* ─── Scrollbar ─────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
+.btn-capsule-light::before {
+  background-color: var(--color-cream);
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-cream);
+.btn-capsule-light:hover {
+  color: var(--color-dark);
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-gold);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-hover);
-}
-
-/* ─── Line Clamp ─────────────────────────── */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+/* ── Image hover zoom ─────────────────────── */
+.image-hover {
   overflow: hidden;
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.image-hover img,
+.image-hover > div {
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.image-hover:hover img,
+.image-hover:hover > div {
+  transform: scale(1.05);
+}
+
+/* ── Section padding ──────────────────────── */
+.section-padding {
+  padding-left: clamp(1.5rem, 4vw, 3rem);
+  padding-right: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* ── Scroll reveal base ───────────────────── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Horizontal scroll snap ───────────────── */
+.horizontal-scroll {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ── Number counter style ─────────────────── */
+.counter-number {
+  font-family: var(--font-heading);
+  font-variant-numeric: tabular-nums;
 }

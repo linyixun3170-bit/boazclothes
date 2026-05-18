@@ -3,162 +3,110 @@
 import { useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const statRefs = useRef<(HTMLDivElement | null)[]>([null, null, null]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      // Fade in overlay
+      gsap.to(overlayRef.current, {
+        opacity: 0,
+        duration: 2,
+        ease: "power2.out",
+        delay: 0.5,
+      });
 
-      tl.fromTo(
-        badgeRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 }
-      )
-        .fromTo(
-          titleRef.current,
-          { y: 60, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1 },
-          "-=0.3"
-        )
-        .fromTo(
-          subtitleRef.current,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8 },
-          "-=0.4"
-        )
-        .fromTo(
-          ctaRef.current,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6 },
-          "-=0.3"
-        )
-        .fromTo(
-          statRefs.current.filter(Boolean),
-          { y: 20, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.15,
-            ease: "power2.out",
-          },
-          "-=0.2"
-        );
-    }, containerRef);
+      // Text reveal
+      gsap.fromTo(
+        textRef.current?.children || [],
+        { y: 80, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.4,
+          stagger: 0.15,
+          ease: "power3.out",
+          delay: 0.8,
+        }
+      );
+    });
 
     return () => ctx.revert();
   }, []);
 
   return (
     <section
-      ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-cream"
+      ref={sectionRef}
+      className="relative h-screen w-full overflow-hidden bg-dark"
     >
-      {/* Subtle pattern */}
-      <div className="absolute inset-0 opacity-[0.02]">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `radial-gradient(circle at 25px 25px, #1a1a1a 1px, transparent 0)`,
-            backgroundSize: "50px 50px",
-          }}
-        />
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80')",
+        }}
+      >
+        <div className="absolute inset-0 bg-dark/40" />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-24 pb-16">
-        {/* Badge — B2B credibility signal */}
-        <div
-          ref={badgeRef}
-          className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 border border-gold/30 text-gold text-xs uppercase tracking-[0.2em] rounded-full"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-          Factory-Direct Pricing &bull; MOQ 50+ Pieces
-        </div>
+      {/* Initial overlay for fade-in effect */}
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 bg-cream z-10"
+        style={{ opacity: 1 }}
+      />
 
-        {/* Title — B2B value proposition */}
-        <h1
-          ref={titleRef}
-          className="font-heading text-5xl md:text-7xl lg:text-8xl text-dark leading-tight md:leading-tight"
-        >
-          Your Brand Starts
+      {/* Content */}
+      <div
+        ref={textRef}
+        className="relative z-20 h-full flex flex-col items-center justify-center text-center section-padding"
+      >
+        <span className="text-caption text-cream/60 mb-6">
+          Hangzhou · Zhejiang & Hebei
+        </span>
+
+        <h1 className="text-display-xl text-cream max-w-4xl text-balance">
+          Your Line,
           <br />
-          <span className="text-gold">at the Factory</span>
+          <span className="italic font-light">Our Craft</span>
         </h1>
 
-        {/* Subtitle — addresses the core B2B pain point */}
-        <p
-          ref={subtitleRef}
-          className="mt-6 text-lg md:text-xl text-warm-gray max-w-2xl mx-auto leading-relaxed"
-        >
-          Premium blank apparel and custom manufacturing, direct from our
-          Guangzhou factory. Quality that speaks for your brand — at prices
-          that make sense for your business.
+        <p className="text-body-xl text-cream/70 mt-8 max-w-xl">
+          Three generations of manufacturing. Factory-direct pricing on premium
+          blank apparel and custom builds.
         </p>
 
-        {/* CTA buttons */}
-        <div
-          ref={ctaRef}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
+        <div className="mt-12 flex flex-col sm:flex-row items-center gap-4">
           <Link
-            href="/wholesale"
-            className="px-8 py-3.5 bg-dark text-cream text-sm uppercase tracking-widest rounded-full hover:bg-gold hover:text-dark transition-all duration-300"
+            href="/contact/"
+            className="btn-capsule btn-capsule-light text-[12px]"
+          >
+            Request a Quote
+          </Link>
+          <Link
+            href="/wholesale/"
+            className="text-[12px] uppercase tracking-[0.2em] text-cream/70 hover:text-cream transition-colors link-underline"
           >
             Browse Products
           </Link>
-          <Link
-            href="/contact"
-            className="px-8 py-3.5 border border-dark/20 text-dark text-sm uppercase tracking-widest rounded-full hover:border-gold hover:text-gold transition-all duration-300"
-          >
-            Request Free Samples
-          </Link>
-        </div>
-
-        {/* Trust stats */}
-        <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
-          {[
-            { number: "10+", label: "Years in Production" },
-            { number: "5,000+", label: "Brands Served" },
-            { number: "1M+", label: "Garments/Year Capacity" },
-          ].map((stat, i) => (
-            <div
-              key={stat.label}
-              ref={(el) => {
-                statRefs.current[i] = el;
-              }}
-              className="text-center"
-            >
-              <div className="font-heading text-3xl md:text-4xl text-dark">
-                {stat.number}
-              </div>
-              <div className="mt-1 text-sm text-warm-gray uppercase tracking-wider">
-                {stat.label}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          className="text-warm-gray"
-        >
-          <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-        </svg>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-cream/50">
+          Scroll
+        </span>
+        <div className="w-px h-8 bg-cream/30 animate-pulse" />
       </div>
     </section>
   );

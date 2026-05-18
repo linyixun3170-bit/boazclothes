@@ -1,154 +1,172 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import ProductCard from "@/components/ProductCard";
-import type { ProductWithCategory } from "@/lib/products";
-import { fetchProducts, fetchCategories } from "@/lib/products";
+import { useState } from "react";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
+import SmoothScroll from "@/components/SmoothScroll";
+
+const allProducts = [
+  {
+    name: "Heavyweight Tee",
+    subtitle: "240gsm Combed Cotton",
+    price: "¥18–28",
+    moq: "50 pcs",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
+    tags: ["Bestseller", "Stock"],
+  },
+  {
+    name: "Premium Hoodie",
+    subtitle: "400gsm Fleece Lined",
+    price: "¥45–70",
+    moq: "50 pcs",
+    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80",
+    tags: ["Premium"],
+  },
+  {
+    name: "Classic Tank",
+    subtitle: "180gsm Ring-Spun",
+    price: "¥12–18",
+    moq: "50 pcs",
+    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
+    tags: ["Stock"],
+  },
+  {
+    name: "Long Sleeve Tee",
+    subtitle: "220gsm Soft Jersey",
+    price: "¥22–32",
+    moq: "50 pcs",
+    image: "https://images.unsplash.com/photo-1593493277262-d3b4805e1bcb?w=600&q=80",
+    tags: ["New"],
+  },
+  {
+    name: "Vintage Wash Tee",
+    subtitle: "200gsm Garment Dyed",
+    price: "¥25–35",
+    moq: "100 pcs",
+    image: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600&q=80",
+    tags: ["Trending"],
+  },
+  {
+    name: "Crop Hoodie",
+    subtitle: "350gsm Brushed Fleece",
+    price: "¥38–55",
+    moq: "100 pcs",
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80",
+    tags: ["Custom"],
+  },
+];
+
+const categories = ["All", "Stock", "Custom", "Premium", "Bestseller"];
 
 export default function WholesalePage() {
-  const [products, setProducts] = useState<ProductWithCategory[]>([]);
-  const [categories, setCategories] = useState<Array<{ id: number; name: string; slug: string }>>([]);
-  const [activeCategory, setActiveCategory] = useState<number | undefined>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
 
-  useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true);
-        const [catData] = await Promise.all([
-          fetchCategories(),
-        ]);
-        setCategories(catData as any);
-        const { products: prodData } = await fetchProducts({ per_page: 12 });
-        setProducts(prodData);
-      } catch (err) {
-        console.error("Failed to load products:", err);
-        setError("Unable to load products at this time.");
-        // Use empty products
-        setProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
-
-  useEffect(() => {
-    if (!loading && products.length > 0) {
-      gsap.fromTo(
-        ".wholesale-product",
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out",
-        }
-      );
-    }
-  }, [loading, products.length]);
-
-  const handleCategoryFilter = async (catId?: number) => {
-    setActiveCategory(catId === activeCategory ? undefined : catId);
-    setLoading(true);
-    try {
-      const { products: prodData } = await fetchProducts({
-        per_page: 12,
-        ...(catId && { category: catId }),
-      });
-      setProducts(prodData);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const filtered =
+    activeCategory === "All"
+      ? allProducts
+      : allProducts.filter((p) => p.tags.includes(activeCategory));
 
   return (
-    <div className="pt-28 pb-20">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-12">
-        <div className="text-center max-w-2xl mx-auto">
-          <span className="text-gold text-xs uppercase tracking-[0.2em]">
-            Wholesale
-          </span>
-          <h1 className="mt-3 font-heading text-4xl md:text-5xl text-dark">
-            Products
-          </h1>
-          <p className="mt-4 text-warm-gray leading-relaxed">
-            Premium blanks ready for your brand. Competitive wholesale pricing
-            on every order.
-          </p>
-        </div>
-      </div>
-
-      {/* Category filter */}
-      {categories.length > 0 && (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-10">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button
-              onClick={() => handleCategoryFilter(undefined)}
-              className={`px-5 py-2 text-xs uppercase tracking-widest rounded-full transition-all duration-300 ${
-                !activeCategory
-                  ? "bg-dark text-cream"
-                  : "bg-light-gray text-dark/70 hover:bg-dark hover:text-cream"
-              }`}
-            >
-              All
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryFilter(cat.id)}
-                className={`px-5 py-2 text-xs uppercase tracking-widest rounded-full transition-all duration-300 ${
-                  activeCategory === cat.id
-                    ? "bg-dark text-cream"
-                    : "bg-light-gray text-dark/70 hover:bg-dark hover:text-cream"
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
+    <>
+      <CustomCursor />
+      <SmoothScroll>
+        <Navbar />
+        <main className="pt-28 pb-20">
+          {/* Header */}
+          <div className="max-w-[1400px] mx-auto section-padding mb-16">
+            <span className="text-caption text-warm-gray mb-4 block">
+              The Collection
+            </span>
+            <h1 className="text-display-lg text-dark">
+              Wholesale <span className="italic">Products</span>
+            </h1>
+            <p className="text-body-lg text-warm-gray mt-6 max-w-xl">
+              Factory-direct pricing on premium blank apparel. All products
+              available for customization — labels, prints, packaging.
+            </p>
           </div>
-        </div>
-      )}
 
-      {/* Products grid */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
-          </div>
-        ) : error ? (
-          <div className="text-center py-20">
-            <p className="text-warm-gray mb-4">{error}</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-8">
-              {/* Show placeholder message */}
-              <div className="col-span-full text-center">
-                <p className="text-sm text-warm-gray/60">
-                  Please ensure the WooCommerce API is configured correctly.
-                </p>
-              </div>
+          {/* Category Filter */}
+          <div className="max-w-[1400px] mx-auto section-padding mb-10">
+            <div className="flex flex-wrap gap-3">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2 rounded-full text-[11px] uppercase tracking-[0.15em] transition-all ${
+                    activeCategory === cat
+                      ? "bg-dark text-cream"
+                      : "bg-light-gray text-dark/60 hover:bg-stone"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-warm-gray">No products found.</p>
+
+          {/* Product Grid */}
+          <div className="max-w-[1400px] mx-auto section-padding">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((product) => (
+                <div key={product.name} className="group" data-cursor-hover>
+                  <div className="relative aspect-[3/4] overflow-hidden mb-5 image-hover">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Tags */}
+                    <div className="absolute top-4 left-4 flex gap-2">
+                      {product.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-cream/90 text-dark"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <h3 className="font-heading text-xl text-dark group-hover:text-gold transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-[12px] text-warm-gray mt-1">
+                    {product.subtitle}
+                  </p>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-[11px] uppercase tracking-[0.15em] text-dark/60">
+                      {product.price}
+                    </span>
+                    <span className="text-[11px] text-warm-gray">
+                      MOQ: {product.moq}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        ) : (
-          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <div key={product.id || product.slug} className="wholesale-product">
-                <ProductCard product={product} />
-              </div>
-            ))}
+
+          {/* CTA */}
+          <div className="max-w-[1400px] mx-auto section-padding mt-20">
+            <div className="bg-light-gray p-12 md:p-16 text-center">
+              <h2 className="text-display-md text-dark mb-4">
+                Need a Custom Order?
+              </h2>
+              <p className="text-body-lg text-warm-gray mb-8 max-w-lg mx-auto">
+                Send us your tech pack, reference sample, or sketch. We'll produce
+                a counter-sample for your approval.
+              </p>
+              <Link href="/contact/" className="btn-capsule">
+                Request a Quote
+              </Link>
+            </div>
           </div>
-        )}
-      </div>
-    </div>
+        </main>
+        <Footer />
+      </SmoothScroll>
+    </>
   );
 }

@@ -11,54 +11,42 @@ if (typeof window !== "undefined") {
 const testimonials = [
   {
     quote:
-      "BOAZ has been our manufacturing partner for over 3 years. Their quality is unmatched — every batch is consistent, every order is on time. They're an extension of our team.",
-    author: "Mark Chen",
-    role: "Founder, StreetWear Co.",
-    location: "Los Angeles, USA",
+      "We've been working with Boaz for 18 months. The fit is exactly right for our US customers — that's the thing that keeps us coming back.",
+    author: "Mark T.",
+    role: "DTC Brand Owner, California",
   },
   {
     quote:
-      "We switched to BOAZ after quality issues with our previous supplier. The difference was immediate — better fabric, cleaner stitching, and real communication. Our customers noticed.",
-    author: "Sarah Kim",
-    role: "Creative Director, Urban Threads",
-    location: "Seoul, South Korea",
+      "4 orders per week, 3,000+ pieces each. They've never missed a delivery window. True source factory, no trading company markup.",
+    author: "Sarah L.",
+    role: "Amazon FBA Seller, UK",
   },
   {
     quote:
-      "The private label service is exceptional. From our custom neck labels to the retail-ready packaging, everything reflects our brand. Our MOQ was only 200 units — try getting that anywhere else.",
-    author: "James Park",
-    role: "Owner, Collective Goods",
-    location: "London, UK",
+      "This price for this quality? I checked six factories before finding Boaz. Their pattern team understood our tech pack on the first try.",
+    author: "James R.",
+    role: "Apparel Startup Founder, Australia",
   },
 ];
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        titleRef.current,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          scrollTrigger: { trigger: titleRef.current, start: "top 85%" },
-        }
-      );
-
-      gsap.fromTo(
         ".testimonial-card",
-        { y: 40, opacity: 0 },
+        { y: 50, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.6,
+          duration: 0.9,
           stagger: 0.15,
           ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+          },
         }
       );
     });
@@ -67,50 +55,27 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-28 bg-dark text-cream">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div ref={titleRef} className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-gold text-xs uppercase tracking-[0.2em]">
-            Trusted by Brands Worldwide
-          </span>
-          <h2 className="mt-3 font-heading text-3xl md:text-4xl">
-            What Our Partners Say
+    <section ref={sectionRef} className="py-32 md:py-40 bg-cream">
+      <div className="max-w-[1400px] mx-auto section-padding">
+        <div className="text-center mb-20">
+          <span className="text-caption text-warm-gray mb-4 block">Testimonials</span>
+          <h2 className="text-display-lg text-dark">
+            What They <span className="italic">Say</span>
           </h2>
-          <p className="mt-4 text-cream/60 leading-relaxed">
-            Real feedback from real brand owners. No scripts, no filters.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="testimonial-card relative p-6 md:p-8 rounded-2xl border border-cream/10 hover:border-gold/20 transition-all duration-500"
+              className="testimonial-card bg-light-gray p-8 md:p-10 flex flex-col justify-between min-h-[280px]"
             >
-              {/* Quote mark */}
-              <span className="font-heading text-5xl text-gold/20 absolute top-4 right-6 leading-none">
-                &ldquo;
-              </span>
-
-              <p className="text-sm md:text-base text-cream/80 leading-relaxed mb-6 italic">
-                &ldquo;{t.quote}&rdquo;
+              <p className="text-body-lg text-dark leading-relaxed">
+                "{t.quote}"
               </p>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
-                  <span className="text-xs uppercase text-gold font-medium">
-                    {t.author
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm text-cream font-medium">{t.author}</p>
-                  <p className="text-[10px] text-cream/50 uppercase tracking-wider">
-                    {t.role} &middot; {t.location}
-                  </p>
-                </div>
+              <div className="mt-8">
+                <p className="text-[13px] font-medium text-dark">{t.author}</p>
+                <p className="text-[11px] text-warm-gray mt-1">{t.role}</p>
               </div>
             </div>
           ))}

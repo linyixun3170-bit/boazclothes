@@ -9,10 +9,10 @@ if (typeof window !== "undefined") {
 }
 
 const stats = [
-  { number: "30,000", suffix: "", label: "Largest Single Order (pieces)" },
-  { number: "3-5", suffix: "", label: "Day Standard Turnaround" },
-  { number: "50-500", suffix: "", label: "Daily Production Volume" },
-  { number: "100", suffix: "%", label: "Transparent Pricing" },
+  { number: "50", suffix: "", label: "MOQ — Pieces per style" },
+  { number: "72", suffix: "hr", label: "Sample Dispatch" },
+  { number: "30,000", suffix: "", label: "Largest Single Order" },
+  { number: "Free", suffix: "", label: "Samples for Partners" },
 ];
 
 export default function Stats() {
@@ -26,8 +26,8 @@ export default function Stats() {
         {
           y: 0,
           opacity: 1,
-          duration: 0.6,
-          stagger: 0.15,
+          duration: 0.8,
+          stagger: 0.12,
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -41,21 +41,18 @@ export default function Stats() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-14 md:py-20 bg-dark text-cream"
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+    <section ref={sectionRef} className="py-20 md:py-28 bg-cream">
+      <div className="max-w-[1400px] mx-auto section-padding">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
           {stats.map((stat) => (
             <div key={stat.label} className="stat-item text-center">
-              <div className="font-heading text-3xl md:text-5xl text-gold leading-none">
+              <div className="counter-number text-display-md text-dark">
                 {stat.number}
                 {stat.suffix && (
-                  <span className="text-xl md:text-2xl">{stat.suffix}</span>
+                  <span className="text-xl md:text-2xl ml-1">{stat.suffix}</span>
                 )}
               </div>
-              <div className="mt-2 md:mt-3 text-xs md:text-sm text-cream/60 uppercase tracking-wider leading-relaxed">
+              <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-warm-gray">
                 {stat.label}
               </div>
             </div>

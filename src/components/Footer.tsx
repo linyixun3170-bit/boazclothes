@@ -1,30 +1,27 @@
 import Link from "next/link";
-import { contactInfo, socialLinks } from "@/lib/images";
 
 export default function Footer() {
   return (
-    <footer className="bg-dark text-cream/80">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-dark text-cream/60">
+      <div className="max-w-[1400px] mx-auto section-padding py-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
           {/* Brand */}
-          <div>
+          <div className="md:col-span-4">
             <Link
               href="/"
-              className="font-heading text-2xl tracking-wider text-cream"
+              className="font-heading text-3xl tracking-[0.15em] text-cream"
             >
               BOAZ
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-cream/60 max-w-xs">
+            <p className="mt-6 text-sm leading-relaxed text-cream/40 max-w-xs">
               Premium wholesale apparel and custom manufacturing from
-              China. Based in Hangzhou with production in Zhejiang & Hebei.
-              Quality that speaks for your brand.
+              China. Based in Hangzhou with production in Zhejiang &amp; Hebei.
             </p>
-            {/* Badges */}
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-8 flex flex-wrap gap-3">
               {["OEKO-TEX®", "ISO 9001", "BSCI"].map((badge) => (
                 <span
                   key={badge}
-                  className="text-[10px] px-2.5 py-1 border border-cream/10 rounded-full text-cream/40"
+                  className="text-[10px] px-3 py-1.5 border border-cream/10 rounded-full text-cream/30"
                 >
                   {badge}
                 </span>
@@ -32,23 +29,23 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-cream text-sm uppercase tracking-widest mb-4">
-              Quick Links
+          {/* Links */}
+          <div className="md:col-span-2">
+            <h4 className="text-[11px] uppercase tracking-[0.2em] text-cream/40 mb-5">
+              Navigate
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {[
-                { label: "Products", href: "/wholesale" },
-                { label: "Custom Manufacturing", href: "/custom" },
-                { label: "Why BOAZ", href: "/why-boaz" },
-                { label: "Journal", href: "/journal" },
-                { label: "Contact", href: "/contact" },
+                { label: "Home", href: "/" },
+                { label: "Products", href: "/wholesale/" },
+                { label: "Customize", href: "/custom/" },
+                { label: "About", href: "/why-boaz/" },
+                { label: "Contact", href: "/contact/" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-cream/60 hover:text-cream transition-colors link-underline"
+                    className="text-sm text-cream/50 hover:text-cream transition-colors link-underline"
                   >
                     {link.label}
                   </Link>
@@ -58,103 +55,87 @@ export default function Footer() {
           </div>
 
           {/* Products */}
-          <div>
-            <h4 className="text-cream text-sm uppercase tracking-widest mb-4">
+          <div className="md:col-span-2">
+            <h4 className="text-[11px] uppercase tracking-[0.2em] text-cream/40 mb-5">
               Products
             </h4>
-            <ul className="space-y-2.5">
-              {[
-                "T-Shirts",
-                "Hoodies",
-                "Tank Tops",
-                "Long Sleeves",
-                "Polos",
-                "Kids Apparel",
-              ].map((item) => (
-                <li key={item}>
-                  <Link
-                    href={`/wholesale?search=${item.toLowerCase()}`}
-                    className="text-sm text-cream/60 hover:text-cream transition-colors link-underline"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-3">
+              {["T-Shirts", "Hoodies", "Tank Tops", "Long Sleeves"].map(
+                (item) => (
+                  <li key={item}>
+                    <Link
+                      href="/wholesale/"
+                      className="text-sm text-cream/50 hover:text-cream transition-colors link-underline"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
 
           {/* Contact */}
-          <div>
-            <h4 className="text-cream text-sm uppercase tracking-widest mb-4">
+          <div className="md:col-span-4">
+            <h4 className="text-[11px] uppercase tracking-[0.2em] text-cream/40 mb-5">
               Get In Touch
             </h4>
-            <ul className="space-y-3">
-              <li className="text-sm text-cream/60">
-                <span className="block text-[10px] uppercase tracking-wider text-cream/40 mb-1">
+            <ul className="space-y-4">
+              <li>
+                <span className="text-[10px] uppercase tracking-wider text-cream/30 block mb-1">
                   Email
                 </span>
                 <a
-                  href={`mailto:${contactInfo.email}`}
-                  className="hover:text-gold transition-colors"
+                  href="mailto:hello@boaz.apparel"
+                  className="text-sm text-cream/60 hover:text-cream transition-colors"
                 >
-                  {contactInfo.email}
+                  hello@boaz.apparel
                 </a>
               </li>
-              <li className="text-sm text-cream/60">
-                <span className="block text-[10px] uppercase tracking-wider text-cream/40 mb-1">
+              <li>
+                <span className="text-[10px] uppercase tracking-wider text-cream/30 block mb-1">
                   WhatsApp
                 </span>
                 <a
-                  href={contactInfo.whatsapp}
+                  href="https://wa.me/8618868798631"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-gold transition-colors"
+                  className="text-sm text-cream/60 hover:text-cream transition-colors"
                 >
-                  Chat on WhatsApp
+                  +86 188 6879 8631 (Andrew)
                 </a>
               </li>
-              <li className="text-sm text-cream/60">
-                <span className="block text-[10px] uppercase tracking-wider text-cream/40 mb-1">
+              <li>
+                <span className="text-[10px] uppercase tracking-wider text-cream/30 block mb-1">
                   WeChat
                 </span>
-                {contactInfo.wechat}
+                <span className="text-sm text-cream/60">Richel</span>
               </li>
-              <li className="text-sm text-cream/60">
-                <span className="block text-[10px] uppercase tracking-wider text-cream/40 mb-1">
+              <li>
+                <span className="text-[10px] uppercase tracking-wider text-cream/30 block mb-1">
                   Location
                 </span>
-                {contactInfo.address}
+                <span className="text-sm text-cream/60">
+                  Hangzhou / Zhejiang &amp; Hebei, China
+                </span>
               </li>
             </ul>
-
-            <Link
-              href="/contact"
-              className="inline-block mt-6 px-6 py-2.5 border border-gold text-gold text-sm uppercase tracking-wider rounded-full hover:bg-gold hover:text-dark transition-all duration-300"
-            >
-              Contact Us
-            </Link>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-cream/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-cream/40">
-            &copy; {new Date().getFullYear()} BOAZ Apparel. All rights
-            reserved.
+        {/* Bottom bar */}
+        <div className="mt-20 pt-8 border-t border-cream/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[11px] text-cream/30 tracking-wider">
+            &copy; {new Date().getFullYear()} Boaz. All rights reserved.
           </p>
           <div className="flex gap-6">
-            {[
-              { name: "Instagram", url: socialLinks.instagram.url },
-              { name: "Facebook", url: socialLinks.facebook.url },
-              { name: "TikTok", url: socialLinks.tiktok.url },
-            ].map((social) => (
+            {["Instagram", "Facebook", "TikTok"].map((social) => (
               <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-cream/40 hover:text-cream/60 transition-colors uppercase tracking-wider"
+                key={social}
+                href="#"
+                className="text-[11px] text-cream/30 hover:text-cream/60 transition-colors uppercase tracking-wider"
               >
-                {social.name}
+                {social}
               </a>
             ))}
           </div>

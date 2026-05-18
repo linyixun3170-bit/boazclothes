@@ -3,13 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { faqSchema } from "./SchemaOrg";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const defaultFaqs = [
+const faqs = [
   {
     q: "What is the minimum order quantity (MOQ)?",
     a: "Our MOQ starts at 50 pieces per style and color. But we routinely scale — our largest single order was 30,000 pieces. Whether you are testing the market or restocking a bestseller, we meet you where you are.",
@@ -39,49 +38,30 @@ const defaultFaqs = [
     a: "Our online sales team is based in Hangzhou. Our production bases are in Zhejiang and Hebei — strategically located to minimize overhead and maximize speed. We do not charge you for expensive downtown real estate.",
   },
   {
-    q: "What makes BOAZ different from other factories?",
+    q: "What makes Boaz different from other factories?",
     a: "We are not a trading company. We are the production line. Three generations of hands-on manufacturing means we control every stitch, every checkpoint, every delivery window. Clients tell us four things consistently: 'This price for this quality?' 'True source factory.' 'Fast.' 'The fit works for our market.'",
   },
 ];
 
-interface FAQProps {
-  faqs?: { q: string; a: string }[];
-  title?: string;
-  subtitle?: string;
-}
-
-export default function FAQ({
-  faqs = defaultFaqs,
-  title = "Frequently Asked Questions",
-  subtitle = "Everything you need to know about working with us.",
-}: FAQProps) {
+export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        titleRef.current,
+        ".faq-item",
         { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.7,
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
-        }
-      );
-
-      gsap.fromTo(
-        ".faq-item",
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
+          duration: 0.6,
           stagger: 0.08,
           ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+          },
         }
       );
     });
@@ -90,76 +70,52 @@ export default function FAQ({
   }, []);
 
   return (
-    <>
-      {/* FAQPage Schema for GEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema(faqs)),
-        }}
-      />
+    <section ref={sectionRef} className="py-32 md:py-40 bg-light-gray">
+      <div className="max-w-3xl mx-auto section-padding">
+        <div className="text-center mb-16">
+          <span className="text-caption text-warm-gray mb-4 block">FAQ</span>
+          <h2 className="text-display-lg text-dark">Common <span className="italic">Questions</span></h2>
+        </div>
 
-      <section ref={sectionRef} className="py-20 md:py-28 bg-white">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <div ref={titleRef} className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-gold text-xs uppercase tracking-[0.2em]">
-              FAQ
-            </span>
-            <h2 className="mt-3 font-heading text-3xl md:text-4xl text-dark">
-              {title}
-            </h2>
-            <p className="mt-4 text-warm-gray leading-relaxed">{subtitle}</p>
-          </div>
-
-          <div className="space-y-3">
-            {faqs.map((faq, i) => {
-              const isOpen = openIndex === i;
-              return (
-                <div
-                  key={i}
-                  className="faq-item border border-light-gray rounded-xl overflow-hidden transition-colors duration-300 hover:border-gold/30"
+        <div className="space-y-3">
+          {faqs.map((faq, i) => {
+            const isOpen = openIndex === i;
+            return (
+              <div
+                key={i}
+                className="faq-item border-b border-stone/50"
+              >
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : i)}
+                  className="w-full flex items-start justify-between py-6 text-left group"
                 >
-                  <button
-                    onClick={() => setOpenIndex(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between px-5 md:px-6 py-4 md:py-5 text-left"
-                    aria-expanded={isOpen}
-                  >
-                    <span className="font-heading text-base md:text-lg text-dark pr-4">
-                      {faq.q}
-                    </span>
-                    <span
-                      className={`shrink-0 w-5 h-5 flex items-center justify-center transition-transform duration-300 ${
-                        isOpen ? "rotate-45" : ""
-                      }`}
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        className="text-gold"
-                      >
-                        <path d="M8 2v12M2 8h12" />
-                      </svg>
-                    </span>
-                  </button>
-                  <div
-                    className={`transition-all duration-300 overflow-hidden ${
-                      isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                  <span className="font-heading text-lg md:text-xl text-dark group-hover:text-gold transition-colors pr-8">
+                    {faq.q}
+                  </span>
+                  <span
+                    className={`shrink-0 mt-1.5 transition-transform duration-300 ${
+                      isOpen ? "rotate-45" : ""
                     }`}
                   >
-                    <p className="px-5 md:px-6 pb-4 md:pb-5 text-sm text-warm-gray leading-relaxed">
-                      {faq.a}
-                    </p>
-                  </div>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M7 1V13M1 7H13" stroke="currentColor" strokeWidth="1" />
+                    </svg>
+                  </span>
+                </button>
+                <div
+                  className={`overflow-hidden transition-all duration-500 ${
+                    isOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <p className="pb-6 text-body-lg text-warm-gray leading-relaxed">
+                    {faq.a}
+                  </p>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
