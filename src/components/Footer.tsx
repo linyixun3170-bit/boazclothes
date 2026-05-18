@@ -16,7 +16,8 @@ export default function Footer() {
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-cream/60 max-w-xs">
               Premium wholesale apparel and custom manufacturing from
-              Guangzhou, China. Quality that speaks for your brand.
+              China. Based in Hangzhou with production in Zhejiang & Hebei.
+              Quality that speaks for your brand.
             </p>
             {/* Badges */}
             <div className="mt-6 flex flex-wrap gap-2">

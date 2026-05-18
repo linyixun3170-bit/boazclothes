@@ -9,10 +9,10 @@ if (typeof window !== "undefined") {
 }
 
 const stats = [
-  { number: "50", suffix: "+", label: "MOQ (pieces per style)" },
-  { number: "72", suffix: "hr", label: "Sample Dispatch" },
-  { number: "50,000", suffix: "+", label: "Daily Production Cap" },
-  { number: "Free", suffix: "", label: "Samples for Partners" },
+  { number: "30,000", suffix: "", label: "Largest Single Order (pieces)" },
+  { number: "3-5", suffix: "", label: "Day Standard Turnaround" },
+  { number: "50-500", suffix: "", label: "Daily Production Volume" },
+  { number: "100", suffix: "%", label: "Transparent Pricing" },
 ];
 
 export default function Stats() {

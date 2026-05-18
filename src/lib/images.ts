@@ -97,20 +97,20 @@ export const badgeImages = {
 
 // ─── Footer 社媒图标 ───────────────────────────
 export const socialLinks = {
-  instagram: { url: "#", label: "Instagram" },
+  instagram: { url: "https://instagram.com/boazclothes", label: "Instagram" },
   facebook: { url: "#", label: "Facebook" },
   tiktok: { url: "#", label: "TikTok" },
-  whatsapp: { url: "https://wa.me/your-number", label: "WhatsApp" },
+  whatsapp: { url: "https://wa.me/8618868798631", label: "WhatsApp" },
 };
 
 // ─── 联系方式（提供单点修改） ───────────────────────────
 export const contactInfo = {
-  email: "info@boazclothes.com",
-  phone: "+86 123 4567 8900",
-  whatsapp: "https://wa.me/your-number",
-  wechat: "Boaz_Apparel",
+  email: "hello@boaz.apparel",
+  phone: "+86 188 6879 8631",
+  whatsapp: "https://wa.me/8618868798631",
+  wechat: "Richel",
   responseTime: "24 hours on business days",
-  address: "Guangzhou, China — Production Facility",
+  address: "Hangzhou / Zhejiang & Hebei, China",
 };
 
 // ─── Phase 3: WordPress 媒体库接入模板 ───────────────────────────

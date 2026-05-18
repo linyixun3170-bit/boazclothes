@@ -41,23 +41,31 @@ export default function About() {
           {/* Text */}
           <div ref={textRef}>
             <span className="text-gold text-xs uppercase tracking-[0.2em]">
-              Who We Are
+              Our Story
             </span>
             <h2 className="mt-3 font-heading text-3xl md:text-5xl text-dark leading-tight">
-              We Own the Factory.
+              Built to Wear,
               <br />
-              <span className="text-gold">You Own the Brand.</span>
+              <span className="text-gold">Made to Last</span>
             </h2>
+            <p className="mt-4 text-warm-gray leading-relaxed italic">
+              Three generations. One uncompromising standard.
+            </p>
             <p className="mt-6 text-warm-gray leading-relaxed">
-              Based in Guangzhou, China, BOAZ Apparel is a vertically integrated
-              garment manufacturer — we own the production line from fabric
-              sourcing to finished product. No middlemen, no markup padding.
+              In an era when education was a luxury, our grandmother used a needle and thread 
+              to put her brother through university. When our mother turned 15, she locked herself 
+              in that same room with a single sewing machine. By 20, she was a sought-after 
+              pattern maker. By 25, seven apprentices sat at her feet — each had arrived 
+              with a pork knuckle as their offering of respect.
             </p>
             <p className="mt-4 text-warm-gray leading-relaxed">
-              For over a decade, we&apos;ve been the manufacturing partner
-              behind hundreds of apparel brands worldwide. Our 50,000+ sq ft
-              facility produces 50,000+ garments daily, all under strict quality
-              control.
+              We grew up in that workshop. Our school dresses were cut and sewn there.
+              Today, Boaz operates two production bases — Zhejiang and Hebei. 
+              Our online sales team sits in Hangzhou.
+            </p>
+            <p className="mt-4 text-warm-gray leading-relaxed font-medium text-dark">
+              We do not rent expensive factory real estate and pass that cost to you. 
+              Product + Labor + Logistics = Your Price.
             </p>
 
             {/* Certification badges */}

@@ -11,24 +11,36 @@ if (typeof window !== "undefined") {
 
 const defaultFaqs = [
   {
-    q: "What is the minimum order quantity (MOQ) for custom t-shirts?",
-    a: "Our MOQ starts at just 50 pieces per style for blank wholesale orders. For custom manufacturing (printing, tagging, packaging), the MOQ is 200 units per design. Contact us for smaller trial orders.",
+    q: "What is the minimum order quantity (MOQ)?",
+    a: "Our MOQ starts at 50 pieces per style and color. But we routinely scale — our largest single order was 30,000 pieces. Whether you are testing the market or restocking a bestseller, we meet you where you are.",
   },
   {
-    q: "How long does sample production take?",
-    a: "Sample production typically takes 5–7 business days. We offer free samples for wholesale partners — you only pay shipping. Express samples available within 48 hours for urgent timelines.",
+    q: "How fast can you produce and ship?",
+    a: "Stock + custom orders: 5-day standard turnaround. Rush orders: 3 days when needed. Large-volume custom orders follow contracted timelines. One of our Amazon clients places 4 orders per week, averaging 3,000+ pieces each — and we have never missed a window.",
   },
   {
-    q: "Can I get custom labels and packaging?",
-    a: "Absolutely. We offer full private label services including custom neck labels, care labels, hang tags, poly bags, and retail-ready packaging. Your brand, your presentation.",
+    q: "Do you offer custom labels, packaging, and branding?",
+    a: "Yes — neck labels, hang tags, poly bags, custom boxes, and garment finishing. We also offer three curated package tiers: an entry-level 'traffic builder' set, a balanced 'quality-value' set, and a premium 'high-margin' set. Each tier is transparently priced so you know exactly what you are paying for.",
   },
   {
-    q: "What fabrics do you use?",
-    a: "We use premium combed ring-spun cotton (180–260gsm), cotton-poly blends, and eco-friendly options like organic cotton and recycled polyester. All fabrics are OEKO-TEX Standard 100 certified.",
+    q: "What is your price range?",
+    a: "Our blank garment prices range from ¥6 for lightweight basic tees to ¥70 for heavyweight premium hoodies. Processing, customization, and logistics are quoted separately — so you see exactly where every dollar goes. No hidden factory real estate costs passed on to you.",
   },
   {
-    q: "Do you ship internationally?",
-    a: "Yes, we ship to over 50 countries worldwide via DHL, FedEx, and sea freight. Typical delivery: 7–15 days for air freight, 25–40 days for sea freight. Free shipping available on orders over $2,000.",
+    q: "Can you develop a completely custom garment from a tech pack or sketch?",
+    a: "Absolutely. Send us a tech pack, a reference sample, or even a rough sketch. Our pattern team — trained the old way, hand-to-hand — will produce a counter-sample for your approval. From clean basics to vintage washes to full custom builds.",
+  },
+  {
+    q: "Who are your typical clients?",
+    a: "Independent DTC brands, Amazon sellers (including top-tier accounts), brick-and-mortar stores, event companies needing team uniforms, training institutions, trading companies, and custom apparel brands. Our patterns are optimized for international body types — clients consistently tell us: 'The fit is exactly right for our foreign customers.'",
+  },
+  {
+    q: "Where are you located?",
+    a: "Our online sales team is based in Hangzhou. Our production bases are in Zhejiang and Hebei — strategically located to minimize overhead and maximize speed. We do not charge you for expensive downtown real estate.",
+  },
+  {
+    q: "What makes BOAZ different from other factories?",
+    a: "We are not a trading company. We are the production line. Three generations of hands-on manufacturing means we control every stitch, every checkpoint, every delivery window. Clients tell us four things consistently: 'This price for this quality?' 'True source factory.' 'Fast.' 'The fit works for our market.'",
   },
 ];
 

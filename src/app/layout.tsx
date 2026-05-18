@@ -23,15 +23,15 @@ const prata = Prata({
 
 export const metadata: Metadata = {
   title: {
-    default: "BOAZ Apparel — Premium Wholesale T-Shirts & Custom Manufacturing from Guangzhou",
-    template: "%s | BOAZ Apparel",
+    default: "Boaz — Premium Wholesale T-Shirts & Custom Manufacturing from China",
+    template: "%s | Boaz",
   },
   description:
-    "Premium wholesale apparel from Guangzhou, China. Factory-direct pricing on custom t-shirts, hoodies, and private label manufacturing. MOQ 50+ pieces. Free samples available.",
+    "Premium wholesale apparel from China. Factory-direct pricing on custom t-shirts, hoodies, and private label manufacturing. Based in Hangzhou with production in Zhejiang & Hebei. MOQ 50+ pieces.",
   keywords: [
     "wholesale t-shirts",
     "custom apparel manufacturer",
-    "clothing factory Guangzhou",
+    "clothing factory China",
     "private label clothing",
     "blank t-shirts wholesale",
     "custom hoodies",
