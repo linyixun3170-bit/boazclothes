@@ -6,6 +6,7 @@ import gsap from "gsap";
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -16,10 +17,16 @@ export default function HeroSection() {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.fromTo(
-        titleRef.current,
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 }
+        badgeRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 }
       )
+        .fromTo(
+          titleRef.current,
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1 },
+          "-=0.3"
+        )
         .fromTo(
           subtitleRef.current,
           { y: 30, opacity: 0 },
@@ -54,8 +61,8 @@ export default function HeroSection() {
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-cream"
     >
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
+      {/* Subtle pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
         <div
           className="w-full h-full"
           style={{
@@ -66,56 +73,66 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-24 pb-16">
-        {/* Badge */}
-        <div className="inline-block mb-6 px-4 py-1.5 border border-gold/30 text-gold text-xs uppercase tracking-[0.2em] rounded-full">
-          Premium Wholesale &amp; Custom Manufacturing
+        {/* Badge — B2B credibility signal */}
+        <div
+          ref={badgeRef}
+          className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 border border-gold/30 text-gold text-xs uppercase tracking-[0.2em] rounded-full"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+          Factory-Direct Pricing &bull; MOQ 50+ Pieces
         </div>
 
-        {/* Title */}
+        {/* Title — B2B value proposition */}
         <h1
           ref={titleRef}
           className="font-heading text-5xl md:text-7xl lg:text-8xl text-dark leading-tight md:leading-tight"
         >
-          Your Brand,
+          Your Brand Starts
           <br />
-          <span className="text-gold">Our Canvas</span>
+          <span className="text-gold">at the Factory</span>
         </h1>
 
-        {/* Subtitle */}
+        {/* Subtitle — addresses the core B2B pain point */}
         <p
           ref={subtitleRef}
           className="mt-6 text-lg md:text-xl text-warm-gray max-w-2xl mx-auto leading-relaxed"
         >
-          Premium blank apparel for wholesale and custom printing. From
-          classic tees to heavyweight hoodies — built for your brand.
+          Premium blank apparel and custom manufacturing, direct from our
+          Guangzhou factory. Quality that speaks for your brand — at prices
+          that make sense for your business.
         </p>
 
-        {/* CTA */}
-        <div ref={ctaRef} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        {/* CTA buttons */}
+        <div
+          ref={ctaRef}
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
           <Link
             href="/wholesale"
             className="px-8 py-3.5 bg-dark text-cream text-sm uppercase tracking-widest rounded-full hover:bg-gold hover:text-dark transition-all duration-300"
           >
-            Explore Products
+            Browse Products
           </Link>
           <Link
-            href="/custom"
+            href="/contact"
             className="px-8 py-3.5 border border-dark/20 text-dark text-sm uppercase tracking-widest rounded-full hover:border-gold hover:text-gold transition-all duration-300"
           >
-            Custom Orders
+            Request Free Samples
           </Link>
         </div>
 
         {/* Trust stats */}
         <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
           {[
-            { number: "10+", label: "Years Experience" },
-            { number: "5,000+", label: "Wholesale Partners" },
-            { number: "1M+", label: "Garments Produced" },
+            { number: "10+", label: "Years in Production" },
+            { number: "5,000+", label: "Brands Served" },
+            { number: "1M+", label: "Garments/Year Capacity" },
           ].map((stat, i) => (
             <div
               key={stat.label}
-              ref={(el) => { statRefs.current[i] = el; }}
+              ref={(el) => {
+                statRefs.current[i] = el;
+              }}
               className="text-center"
             >
               <div className="font-heading text-3xl md:text-4xl text-dark">

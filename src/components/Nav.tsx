@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/wholesale", label: "Wholesale" },
+  { href: "/wholesale", label: "Products" },
   { href: "/custom", label: "Custom" },
-  { href: "/why-boaz", label: "Why Boaz" },
+  { href: "/why-boaz", label: "Why BOAZ" },
   { href: "/journal", label: "Journal" },
   { href: "/contact", label: "Contact" },
 ];
@@ -17,6 +17,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLHeadElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -24,24 +25,42 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const isHome = pathname === "/";
+
   return (
     <header
+      ref={headerRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-cream/90 backdrop-blur-md shadow-sm"
-          : "bg-transparent"
+          : isHome
+          ? "bg-transparent"
+          : "bg-cream/80 backdrop-blur-sm"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
         {/* Logo */}
         <Link
           href="/"
-          className="font-heading text-2xl tracking-wider text-dark"
+          className={`font-heading text-2xl tracking-wider transition-colors duration-300 ${
+            scrolled || !isHome ? "text-dark" : "text-dark"
+          }`}
         >
           BOAZ
         </Link>
@@ -58,13 +77,23 @@ export default function Nav() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-sm tracking-wider uppercase transition-colors duration-300 link-underline ${
-                  isActive ? "text-gold" : "text-dark/70 hover:text-dark"
+                  isActive
+                    ? "text-gold"
+                    : "text-dark/70 hover:text-dark"
                 }`}
               >
                 {link.label}
               </Link>
             );
           })}
+
+          {/* CTA button in nav */}
+          <Link
+            href="/contact"
+            className="px-5 py-2 bg-dark text-cream text-xs uppercase tracking-widest rounded-full hover:bg-gold hover:text-dark transition-all duration-300"
+          >
+            Get a Quote
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -91,32 +120,36 @@ export default function Nav() {
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden transition-all duration-500 overflow-hidden ${
-          mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="bg-cream/95 backdrop-blur-md px-6 pb-8 pt-4 flex flex-col gap-4">
-          {navLinks.map((link) => {
-            const isActive =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-base tracking-wider uppercase py-2 transition-colors ${
-                  isActive ? "text-gold" : "text-dark/70 hover:text-dark"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+      {/* Mobile menu — fullscreen overlay */}
+      {mobileOpen && (
+        <div className="md:hidden fixed inset-0 top-20 bg-cream/98 backdrop-blur-lg z-40">
+          <div className="flex flex-col items-center justify-center h-full gap-8 px-6">
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-2xl tracking-wider uppercase transition-colors ${
+                    isActive ? "text-gold" : "text-dark/70 hover:text-dark"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <Link
+              href="/contact"
+              className="mt-6 px-8 py-3.5 bg-dark text-cream text-sm uppercase tracking-widest rounded-full hover:bg-gold hover:text-dark transition-all"
+            >
+              Get a Quote
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }
