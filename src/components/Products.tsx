@@ -2,51 +2,19 @@
 
 import { useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getFeaturedProducts } from "@/lib/products-catalog";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const products = [
-  {
-    name: "Heavyweight Tee",
-    subtitle: "240gsm Combed Cotton",
-    price: "From ¥18",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
-    href: "/wholesale/",
-  },
-  {
-    name: "Premium Hoodie",
-    subtitle: "400gsm Fleece Lined",
-    price: "From ¥45",
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80",
-    href: "/wholesale/",
-  },
-  {
-    name: "Classic Tank",
-    subtitle: "180gsm Ring-Spun",
-    price: "From ¥12",
-    image:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
-    href: "/wholesale/",
-  },
-  {
-    name: "Long Sleeve",
-    subtitle: "220gsm Soft Jersey",
-    price: "From ¥22",
-    image:
-      "https://images.unsplash.com/photo-1593493277262-d3b4805e1bcb?w=600&q=80",
-    href: "/wholesale/",
-  },
-];
-
 export default function Products() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const featured = getFeaturedProducts();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -109,28 +77,43 @@ export default function Products() {
 
         {/* Product Grid */}
         <div className="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {featured.map((product) => (
             <Link
-              key={product.name}
-              href={product.href}
+              key={product.id}
+              href={`/wholesale/`}
               className="product-card group"
               data-cursor-hover
             >
               <div className="relative aspect-[3/4] overflow-hidden mb-5 image-hover">
-                <img
-                  src={product.image}
+                <Image
+                  src={product.images.main}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-dark/0 group-hover:bg-dark/10 transition-colors duration-500" />
+                {/* Tag */}
+                {product.isBestSeller && (
+                  <div className="absolute top-4 left-4">
+                    <span className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-cream/90 text-dark">
+                      Best Seller
+                    </span>
+                  </div>
+                )}
+                {product.isNew && (
+                  <div className="absolute top-4 left-4">
+                    <span className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-dark/90 text-cream">
+                      New
+                    </span>
+                  </div>
+                )}
               </div>
               <h3 className="font-heading text-xl text-dark group-hover:text-gold transition-colors">
                 {product.name}
               </h3>
-              <p className="text-[12px] text-warm-gray mt-1">{product.subtitle}</p>
+              <p className="text-[12px] text-warm-gray mt-1">{product.tagline}</p>
               <p className="text-[11px] uppercase tracking-[0.15em] text-dark/60 mt-2">
-                {product.price}
+                {product.priceFOB} · MOQ {product.moq}
               </p>
             </Link>
           ))}

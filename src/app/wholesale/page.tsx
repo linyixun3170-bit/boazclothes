@@ -1,72 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
+import { products, type Product } from "@/lib/products-catalog";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const allProducts = [
-  {
-    name: "Heavyweight Tee",
-    subtitle: "240gsm Combed Cotton",
-    price: "¥18–28",
-    moq: "50 pcs",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
-    tags: ["Bestseller", "Stock"],
-  },
-  {
-    name: "Premium Hoodie",
-    subtitle: "400gsm Fleece Lined",
-    price: "¥45–70",
-    moq: "50 pcs",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80",
-    tags: ["Premium"],
-  },
-  {
-    name: "Classic Tank",
-    subtitle: "180gsm Ring-Spun",
-    price: "¥12–18",
-    moq: "50 pcs",
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
-    tags: ["Stock"],
-  },
-  {
-    name: "Long Sleeve Tee",
-    subtitle: "220gsm Soft Jersey",
-    price: "¥22–32",
-    moq: "50 pcs",
-    image: "https://images.unsplash.com/photo-1593493277262-d3b4805e1bcb?w=600&q=80",
-    tags: ["New"],
-  },
-  {
-    name: "Vintage Wash Tee",
-    subtitle: "200gsm Garment Dyed",
-    price: "¥25–35",
-    moq: "100 pcs",
-    image: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600&q=80",
-    tags: ["Trending"],
-  },
-  {
-    name: "Crop Hoodie",
-    subtitle: "350gsm Brushed Fleece",
-    price: "¥38–55",
-    moq: "100 pcs",
-    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80",
-    tags: ["Custom"],
-  },
-];
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
-const categories = ["All", "Stock", "Custom", "Premium", "Bestseller"];
+const categories = ["All", "T-Shirts", "Hoodies", "Long Sleeves", "Kids", "Tank Tops"];
 
 export default function WholesalePage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const filtered =
+  const filtered: Product[] =
     activeCategory === "All"
-      ? allProducts
-      : allProducts.filter((p) => p.tags.includes(activeCategory));
+      ? products
+      : products.filter((p) => p.category === activeCategory);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".wholesale-card",
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+          },
+        }
+      );
+    });
+    return () => ctx.revert();
+  }, [activeCategory]);
 
   return (
     <>
@@ -108,19 +88,31 @@ export default function WholesalePage() {
           </div>
 
           {/* Product Grid */}
-          <div className="max-w-[1400px] mx-auto section-padding">
+          <div ref={sectionRef} className="max-w-[1400px] mx-auto section-padding">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((product) => (
-                <div key={product.name} className="group" data-cursor-hover>
-                  <div className="relative aspect-[3/4] overflow-hidden mb-5 image-hover">
-                    <img
-                      src={product.image}
+                <div
+                  key={product.id}
+                  className="wholesale-card group"
+                  data-cursor-hover
+                  onMouseEnter={() => setHoveredProduct(product.id)}
+                  onMouseLeave={() => setHoveredProduct(null)}
+                >
+                  <div className="relative aspect-[3/4] overflow-hidden mb-5 image-hover bg-light-gray">
+                    <Image
+                      src={
+                        hoveredProduct === product.id && product.images.gallery[1]
+                          ? product.images.gallery[1]
+                          : product.images.main
+                      }
                       alt={product.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover transition-opacity duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     {/* Tags */}
                     <div className="absolute top-4 left-4 flex gap-2">
-                      {product.tags.map((tag) => (
+                      {product.tags.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
                           className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-cream/90 text-dark"
@@ -134,14 +126,26 @@ export default function WholesalePage() {
                     {product.name}
                   </h3>
                   <p className="text-[12px] text-warm-gray mt-1">
-                    {product.subtitle}
+                    {product.tagline}
                   </p>
                   <div className="mt-3 flex items-center justify-between">
                     <span className="text-[11px] uppercase tracking-[0.15em] text-dark/60">
-                      {product.price}
+                      {product.priceFOB}
                     </span>
                     <span className="text-[11px] text-warm-gray">
                       MOQ: {product.moq}
+                    </span>
+                  </div>
+                  {/* Quick specs */}
+                  <div className="mt-3 pt-3 border-t border-stone/50 flex gap-4">
+                    <span className="text-[10px] uppercase tracking-wider text-warm-gray/70">
+                      {product.weight}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-wider text-warm-gray/70">
+                      {product.fabric}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-wider text-warm-gray/70">
+                      {product.fit}
                     </span>
                   </div>
                 </div>
@@ -156,8 +160,8 @@ export default function WholesalePage() {
                 Need a Custom Order?
               </h2>
               <p className="text-body-lg text-warm-gray mb-8 max-w-lg mx-auto">
-                Send us your tech pack, reference sample, or sketch. We'll produce
-                a counter-sample for your approval.
+                Send us your tech pack, reference sample, or sketch. We&apos;ll
+                produce a counter-sample for your approval.
               </p>
               <Link href="/contact/" className="btn-capsule">
                 Request a Quote
