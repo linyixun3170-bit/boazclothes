@@ -1,112 +1,106 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { images } from "@/lib/images";
 
 export default function HeroSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Fade in overlay
-      gsap.to(overlayRef.current, {
-        opacity: 0,
-        duration: 2,
-        ease: "power2.out",
-        delay: 0.5,
-      });
-
-      // Text reveal
+      // Title animation - fade in from bottom
       gsap.fromTo(
-        textRef.current?.children || [],
+        ".hero-title-line",
         { y: 80, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1.4,
+          duration: 1.2,
           stagger: 0.15,
           ease: "power3.out",
-          delay: 0.8,
+          delay: 0.3,
         }
       );
-    });
-
+      // CTA fade in
+      gsap.fromTo(
+        ".hero-cta",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.9,
+        }
+      );
+    }, heroRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <section
-      ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden bg-dark"
+      ref={heroRef}
+      className="relative w-full h-screen overflow-hidden"
     >
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80')",
-        }}
-      >
-        <div className="absolute inset-0 bg-dark/40" />
+      {/* Background Image - Full screen */}
+      <div className="absolute inset-0">
+        <Image
+          src={images.hero.main}
+          alt={images.hero.alt}
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        {/* Dark gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </div>
 
-      {/* Initial overlay for fade-in effect */}
-      <div
-        ref={overlayRef}
-        className="absolute inset-0 bg-cream z-10"
-        style={{ opacity: 1 }}
-      />
-
-      {/* Content */}
+      {/* Content - positioned at bottom left like Nomad */}
       <div
         ref={textRef}
-        className="relative z-20 h-full flex flex-col items-center justify-center text-center section-padding"
+        className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-12 lg:px-20 pb-20 md:pb-28"
       >
-        <span className="text-caption text-cream/60 mb-6">
-          Hangzhou · Zhejiang & Hebei
-        </span>
+        <div className="max-w-[1400px] mx-auto">
+          {/* Small label */}
+          <p className="hero-title-line text-[11px] uppercase tracking-[0.25em] text-white/60 mb-4">
+            Premium Apparel Manufacturing
+          </p>
 
-        <h1 className="text-display-xl text-cream max-w-4xl text-balance">
-          Your Line,
-          <br />
-          <span className="italic font-light">Our Craft</span>
-        </h1>
+          {/* Main title - large serif */}
+          <h1 className="font-heading text-white">
+            <span className="hero-title-line block text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.95] tracking-tight">
+              Crafted to
+            </span>
+            <span className="hero-title-line block text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.95] tracking-tight italic">
+              Wear.
+            </span>
+          </h1>
 
-        <p className="text-body-xl text-cream/70 mt-8 max-w-xl">
-          Three generations of manufacturing. Factory-direct pricing on premium
-          blank apparel and custom builds.
-        </p>
-
-        <div className="mt-12 flex flex-col sm:flex-row items-center gap-4">
-          <Link
-            href="/contact/"
-            className="btn-capsule btn-capsule-light text-[12px]"
-          >
-            Request a Quote
-          </Link>
-          <Link
-            href="/wholesale/"
-            className="text-[12px] uppercase tracking-[0.2em] text-cream/70 hover:text-cream transition-colors link-underline"
-          >
-            Browse Products
-          </Link>
+          {/* Subtitle + CTA row */}
+          <div className="hero-cta mt-8 md:mt-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <p className="text-white/70 text-sm md:text-base max-w-md leading-relaxed">
+              Factory-direct blank apparel for brands that demand quality. 
+              50 pieces MOQ. 72-hour sample dispatch.
+            </p>
+            <Link
+              href="/contact/"
+              className="inline-block px-8 py-3.5 border border-white/40 text-white text-[11px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-500 rounded-full shrink-0"
+              data-cursor-hover
+            >
+              Request a Quote
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-cream/50">
-          Scroll
-        </span>
-        <div className="w-px h-8 bg-cream/30 animate-pulse" />
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+        <div className="w-px h-12 bg-white/30 animate-pulse" />
       </div>
     </section>
   );

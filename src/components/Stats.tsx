@@ -4,16 +4,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const stats = [
-  { number: "50", suffix: "", label: "MOQ — Pieces per style" },
-  { number: "72", suffix: "hr", label: "Sample Dispatch" },
-  { number: "30,000", suffix: "", label: "Largest Single Order" },
-  { number: "Free", suffix: "", label: "Samples for Partners" },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Stats() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -27,7 +18,7 @@ export default function Stats() {
           y: 0,
           opacity: 1,
           duration: 0.8,
-          stagger: 0.12,
+          stagger: 0.1,
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -35,26 +26,29 @@ export default function Stats() {
           },
         }
       );
-    });
-
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
+  const stats = [
+    { value: "¥6–¥70", label: "Price Range" },
+    { value: "50", label: "MOQ (pieces)" },
+    { value: "30K", label: "Max Capacity" },
+    { value: "72hr", label: "Sample Dispatch" },
+  ];
+
   return (
-    <section ref={sectionRef} className="py-20 md:py-28 bg-cream">
-      <div className="max-w-[1400px] mx-auto section-padding">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
+    <section ref={sectionRef} className="bg-dark py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((stat) => (
-            <div key={stat.label} className="stat-item text-center">
-              <div className="counter-number text-display-md text-dark">
-                {stat.number}
-                {stat.suffix && (
-                  <span className="text-xl md:text-2xl ml-1">{stat.suffix}</span>
-                )}
-              </div>
-              <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-warm-gray">
+            <div key={stat.label} className="stat-item text-center md:text-left">
+              <p className="font-heading text-3xl md:text-4xl lg:text-5xl text-white leading-none">
+                {stat.value}
+              </p>
+              <p className="text-[11px] text-white/40 uppercase tracking-[0.2em] mt-3">
                 {stat.label}
-              </div>
+              </p>
             </div>
           ))}
         </div>

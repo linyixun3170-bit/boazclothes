@@ -19,7 +19,6 @@ const categories = ["All", "T-Shirts", "Hoodies", "Long Sleeves", "Kids", "Tank 
 
 export default function WholesalePage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const filtered: Product[] =
@@ -54,23 +53,23 @@ export default function WholesalePage() {
       <SmoothScroll>
         <Navbar />
         <main className="pt-28 pb-20">
-          {/* Header */}
-          <div className="max-w-[1400px] mx-auto section-padding mb-16">
-            <span className="text-caption text-warm-gray mb-4 block">
+          {/* Header - minimal like Nomad */}
+          <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mb-16">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-gray-400 mb-4">
               The Collection
-            </span>
-            <h1 className="text-display-lg text-dark">
+            </p>
+            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-dark leading-tight">
               Wholesale <span className="italic">Products</span>
             </h1>
-            <p className="text-body-lg text-warm-gray mt-6 max-w-xl">
-              Factory-direct pricing on premium blank apparel. All products
-              available for customization — labels, prints, packaging.
+            <p className="text-dark/50 mt-6 max-w-md text-sm leading-relaxed">
+              Factory-direct pricing on premium blank apparel. Available for
+              customization — labels, prints, packaging.
             </p>
           </div>
 
-          {/* Category Filter */}
-          <div className="max-w-[1400px] mx-auto section-padding mb-10">
-            <div className="flex flex-wrap gap-3">
+          {/* Category Filter - pill style */}
+          <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mb-12">
+            <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -78,7 +77,7 @@ export default function WholesalePage() {
                   className={`px-5 py-2 rounded-full text-[11px] uppercase tracking-[0.15em] transition-all ${
                     activeCategory === cat
                       ? "bg-dark text-cream"
-                      : "bg-light-gray text-dark/60 hover:bg-stone"
+                      : "bg-light-gray text-dark/50 hover:bg-gray-100"
                   }`}
                 >
                   {cat}
@@ -87,90 +86,57 @@ export default function WholesalePage() {
             </div>
           </div>
 
-          {/* Product Grid */}
-          <div ref={sectionRef} className="max-w-[1400px] mx-auto section-padding">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Product Grid - large images, minimal info */}
+          <div ref={sectionRef} className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {filtered.map((product) => (
-                <div
-                  key={product.id}
-                  className="wholesale-card group"
-                  data-cursor-hover
-                  onMouseEnter={() => setHoveredProduct(product.id)}
-                  onMouseLeave={() => setHoveredProduct(null)}
-                >
-                  <div className="relative aspect-[3/4] overflow-hidden mb-5 image-hover bg-light-gray">
-                    <Image
-                      src={
-                        hoveredProduct === product.id && product.images.gallery[1]
-                          ? product.images.gallery[1]
-                          : product.images.main
-                      }
-                      alt={product.name}
-                      fill
-                      className="object-cover transition-opacity duration-500"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                    {/* Tags */}
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      {product.tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-cream/90 text-dark"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <h3 className="font-heading text-xl text-dark group-hover:text-gold transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-[12px] text-warm-gray mt-1">
-                    {product.tagline}
-                  </p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-[11px] uppercase tracking-[0.15em] text-dark/60">
-                      {product.priceFOB}
-                    </span>
-                    <span className="text-[11px] text-warm-gray">
-                      MOQ: {product.moq}
-                    </span>
-                  </div>
-                  {/* Quick specs */}
-                  <div className="mt-3 pt-3 border-t border-stone/50 flex gap-4">
-                    <span className="text-[10px] uppercase tracking-wider text-warm-gray/70">
-                      {product.weight}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-wider text-warm-gray/70">
-                      {product.fabric}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-wider text-warm-gray/70">
-                      {product.fit}
-                    </span>
-                  </div>
-                </div>
+                <ProductCard key={product.id} product={product} />
               ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="max-w-[1400px] mx-auto section-padding mt-20">
-            <div className="bg-light-gray p-12 md:p-16 text-center">
-              <h2 className="text-display-md text-dark mb-4">
-                Need a Custom Order?
-              </h2>
-              <p className="text-body-lg text-warm-gray mb-8 max-w-lg mx-auto">
-                Send us your tech pack, reference sample, or sketch. We&apos;ll
-                produce a counter-sample for your approval.
-              </p>
-              <Link href="/contact/" className="btn-capsule">
-                Request a Quote
-              </Link>
             </div>
           </div>
         </main>
         <Footer />
       </SmoothScroll>
     </>
+  );
+}
+
+function ProductCard({ product }: { product: Product }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Link
+      href={`/wholesale/${product.slug}/`}
+      className="wholesale-card group block"
+      data-cursor-hover
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Large image container */}
+      <div className="relative aspect-[4/5] overflow-hidden bg-light-gray rounded-sm">
+        <Image
+          src={
+            isHovered && product.images.gallery[1]
+              ? product.images.gallery[1]
+              : product.images.main
+          }
+          alt={product.name}
+          fill
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      </div>
+
+      {/* Minimal info below */}
+      <div className="mt-4 flex items-start justify-between">
+        <div>
+          <h3 className="text-sm font-medium text-dark">{product.name}</h3>
+          <p className="text-xs text-gray-400 mt-1">{product.tagline}</p>
+        </div>
+        <span className="text-sm text-dark/60 tabular-nums">
+          {product.priceFOB}
+        </span>
+      </div>
+    </Link>
   );
 }
